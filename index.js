@@ -40,6 +40,9 @@ const handlers = {
 // });
     },
     'AMAZON.HelpIntent': function () {
+        // for local testing
+        console.log('Event = ' + JSON.stringify(this.event));
+
         const speechOutput = HELP_MESSAGE;
         const reprompt = HELP_REPROMPT;
 
@@ -47,10 +50,16 @@ const handlers = {
         this.emit(':responseReady');
     },
     'AMAZON.CancelIntent': function () {
+        // for local testing
+        console.log('Event = ' + JSON.stringify(this.event));
+
         this.response.speak(STOP_MESSAGE);
         this.emit(':responseReady');
     },
     'AMAZON.StopIntent': function () {
+        // for local testing
+        console.log('Event = ' + JSON.stringify(this.event));
+
         this.response.speak(STOP_MESSAGE);
         this.emit(':responseReady');
     },
