@@ -28,9 +28,11 @@ const STOP_MESSAGE = 'Goodbye!';
 
 const handlers = {
     'LaunchRequest': function () {
+        console.log('Event = ' + JSON.stringify(this.event));
         this.emit(':ask', 'Welcome to scholarjet assistant', 'You can ask things like blah');
     },
     'SubmissionCountIntent': function () {
+        console.log('Event = ' + JSON.stringify(this.event));
         this.response.speak('Francisco is a dumbass');
         this.emit(':responseReady');
 //         this.request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, (err, res, body) => {
