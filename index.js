@@ -10,7 +10,8 @@
 
 'use strict';
 const Alexa = require('alexa-sdk');
-// const request = require('request');
+const request = require('request');
+const SJ_PROD_URI_BASE = 'https://api.scholarjet.com/api/';
 
 
 //=========================================================================================================================================
@@ -33,13 +34,33 @@ const handlers = {
     },
     'SubmissionCountIntent': function () {
         console.log('Event = ' + JSON.stringify(this.event));
+        console.log('\n\n\n\n\n\n');
+
+        let authBody = {};
+        authBody.username = process.env.SJ_ADMIN_EMAIL;
+        authBody.password = process.env.SJ_ADMIN_PASSWORD;
+
+        console.log('auth body', authBody);
+
+        request.post(SJ_PROD_URI_BASE + 'authentication', authBody, (err, res, body) => {
+            console.log('did we get anything? ?? \n');
+            console.log(err);
+            console.log(res);
+            console.log(body);
+        });
+
+        // request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, (err, res, body) => {
+        //         console.log('yeah boi? ', res);
+        //         console.log('yeah boi? ', body);
+        //     if (err) {
+        //         return console.log(err);
+        //     }
+        //     console.log(body.url);
+        //     console.log(body.explanation);
+        // });
+
         this.response.speak('Francisco is a dumbass');
         this.emit(':responseReady');
-//         this.request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, (err, res, body) => {
-//   if (err) { return console.log(err); }
-//   console.log(body.url);
-//   console.log(body.explanation);
-// });
     },
     'AMAZON.HelpIntent': function () {
         // for local testing
