@@ -45,8 +45,11 @@ const handlers = {
 
         request.post(SJ_PROD_URI_BASE + 'authentication', option, (err, res, body) => {
             if (res || body) {
-                console.log(res.body.token);
-                var beaerToken = res.body.token;
+                // console.log(res.body.token);
+                var bearerToken = res.body.token;
+                if (bearerToken) {
+                    request.get(SJ_PROD_URI_BASE + 'portfolios/by-student/1234').auth(null, null, true, bearerToken)
+                }
 
                 this.response.speak('Francisco is a dumbass');
                 this.emit(':responseReady');
