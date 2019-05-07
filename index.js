@@ -40,13 +40,21 @@ const handlers = {
         authBody.username = process.env.SJ_ADMIN_EMAIL;
         authBody.password = process.env.SJ_ADMIN_PASSWORD;
 
-        console.log('auth body', authBody);
+        let option = {};
+        option.json = authBody;
 
-        request.post(SJ_PROD_URI_BASE + 'authentication', authBody, (err, res, body) => {
-            console.log('did we get anything? ?? \n');
-            console.log(err);
-            console.log(res);
-            console.log(body);
+        request.post(SJ_PROD_URI_BASE + 'authentication', option, (err, res, body) => {
+            if (res || body) {
+                console.log(res.body.token);
+                var beaerToken = res.body.token;
+
+                this.response.speak('Francisco is a dumbass');
+                this.emit(':responseReady');
+            }
+            if (err) {
+                console.log('ahhhh');
+                console.log(err);
+            }
         });
 
         // request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, (err, res, body) => {
@@ -58,9 +66,6 @@ const handlers = {
         //     console.log(body.url);
         //     console.log(body.explanation);
         // });
-
-        this.response.speak('Francisco is a dumbass');
-        this.emit(':responseReady');
     },
     'AMAZON.HelpIntent': function () {
         // for local testing
