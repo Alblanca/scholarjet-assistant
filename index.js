@@ -45,17 +45,32 @@ const handlers = {
 
         request.post(SJ_PROD_URI_BASE + 'authentication', option, (err, res, body) => {
             if (res || body) {
-                // console.log(res.body.token);
-                var bearerToken = res.body.token;
+                console.log(res.body.token);
+                var bearerToken = { 'bearer': res.body.token };
                 if (bearerToken) {
-                    request.get(SJ_PROD_URI_BASE + 'portfolios/by-student/1234').auth(null, null, true, bearerToken)
+                    var authorization = {'Authorization': 'Bearer ' + res.body.token};
+                    // authorization.auth = bearerToken;
+                    const options = {
+                        url: SJ_PROD_URI_BASE + 'useractivitypoints',
+                        headers: authorization
+                    };
+                    console.log('sending auth with this token ', options);
+                    request.get(options, (err, res, body) => {
+                        if (err) {
+                            console.log('There was an error getting this request');
+                            console.log(err);
+                        }
+                        if (res || body ) {
+                            console.log('successfully received the request body');
+                            console.log(res.body);
+                            this.response.speak('Francisco is a dumbass');
+                            this.emit(':responseReady');
+                        }
+                    })
                 }
-
-                this.response.speak('Francisco is a dumbass');
-                this.emit(':responseReady');
             }
             if (err) {
-                console.log('ahhhh');
+                console.log('There was an error requesting for bearer token: ');
                 console.log(err);
             }
         });
@@ -102,3 +117,7 @@ exports.handler = function (event, context, callback) {
     alexa.registerHandlers(handlers);
     alexa.execute();
 };
+
+function getAuthorization() {
+
+}
